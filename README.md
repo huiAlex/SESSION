@@ -20,7 +20,7 @@ and generalizability than three baseline approaches(SentiStrength, SentiStrength
 2. ```data``` contains data used in SESSION.
   * ```benchmark_data``` contains benchmark datasets we used to evaluate SESSION. 
   As they were not generated and released by us, we do not provide them here. 
-  If want to you use any of them, you should fulfill the licenses that they were released with and consider citing the original papers, and you can download original datasets at [Senti4SD](https://github.com/collab-uniba/Senti4SD)and [Lin et.al@ICSE2018](https://sentiment-se.github.io/replication.zip).
+  If you want to use any of them, you should fulfill the licenses that they were released with and consider citing the original papers, and you can download original datasets at [Senti4SD](https://github.com/collab-uniba/Senti4SD)and [Lin et.al@ICSE2018](https://sentiment-se.github.io/replication.zip).
 
   * ```sentistrength_data```  contains SentiStrength's various lists used for sentiment analysis.
 
