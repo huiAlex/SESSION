@@ -1,6 +1,6 @@
 # SESSION
-SESSION is a sentiment analysis tool of the paper: 
-**[Exploiting the Unique Expression for Improved Sentiment Analysis in Software Engineering Text]** .
+SESSION is a sentiment analysis tool of our ICPC'2021 paper " 
+**[Exploiting the Unique Expression for Improved Sentiment Analysis in Software Engineering Text]**".
 It uses sentence structure information to improve the sentiment analysis in SE texts. 
 It contains a set of filter and adjust rules based on sentence structures inside SE texts, 
 and combines these heuristics with the mainstream dictionary-based approach called SentiStrength. 
