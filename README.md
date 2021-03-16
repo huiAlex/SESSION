@@ -10,8 +10,8 @@ and generalizability than three baseline approaches(SentiStrength, SentiStrength
 1. ```src/main/java``` contains the codes of SESSION. 
   * ```sentstrength``` contains the main codes for sentiment analysis.The Main-Class is SentiStrength.
     The class ClassificationOptions contains initial settings for various rules. 
-    The code about adjust rules is in the class Sentence.
-    The code where Trigger start to work is in the class Paragraph.
+    The code about adjustment rules is in the class Sentence.
+    The code where Trigger starts to work is in the class Paragraph.
   * ```preprocess``` contains the main codes for preprocessing and segment. 
     The inlet of preprocessing and segment is in the class PreProcess.
     The code about the part of speech tagging is in the class POSTagging.
