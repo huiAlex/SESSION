@@ -8,6 +8,7 @@ package weka;
 import java.io.*;
 import java.util.Date;
 import java.util.Random;
+
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.Evaluation;
@@ -27,18 +28,15 @@ import weka.filters.unsupervised.instance.Randomize;
 // Referenced classes of package uk.ac.wlv.wkaclass:
 //            Utilities
 
-public class WekaCrossValidateInfoGain
-{
+public class WekaCrossValidateInfoGain {
 
     private static String sgJarFolder = "C:/jars/";
 
-    public WekaCrossValidateInfoGain()
-    {
+    public WekaCrossValidateInfoGain() {
     }
 
     public static void main(String args[])
-        throws Exception
-    {
+            throws Exception {
         boolean bArgumentRecognised[] = new boolean[args.length];
         boolean lessFeaturesRequestedThanData = true;
         String classifierName = ",,all,";
@@ -53,77 +51,64 @@ public class WekaCrossValidateInfoGain
         int stepFeatures = 100;
         int iterations = 30;
         Random random = new Random();
-        for(int i = 0; i < args.length; i++)
+        for (int i = 0; i < args.length; i++)
             bArgumentRecognised[i] = false;
 
-        for(int i = 0; i < args.length; i++)
-        {
-            if(args[i].equals("infogain"))
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("infogain"))
                 bArgumentRecognised[i] = true;
-            if(i < args.length - 1)
-            {
-                if(args[i].equals("min"))
-                {
+            if (i < args.length - 1) {
+                if (args[i].equals("min")) {
                     minFeatures = Integer.parseInt(args[i + 1].trim());
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("max"))
-                {
+                if (args[i].equals("max")) {
                     maxFeatures = Integer.parseInt(args[i + 1].trim());
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("step"))
-                {
+                if (args[i].equals("step")) {
                     stepFeatures = Integer.parseInt(args[i + 1].trim());
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("iterations"))
-                {
+                if (args[i].equals("iterations")) {
                     iterations = Integer.parseInt(args[i + 1].trim());
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("classifier"))
-                {
+                if (args[i].equals("classifier")) {
                     classifierName = (new StringBuilder(",,")).append(args[i + 1].toLowerCase()).append(",").toString();
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("exclude"))
-                {
+                if (args[i].equals("exclude")) {
                     classifierExclude = args[i + 1];
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("instructions"))
-                {
+                if (args[i].equals("instructions")) {
                     instructionFilename = args[i + 1];
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("input"))
-                {
+                if (args[i].equals("input")) {
                     inputArffFilename = args[i + 1];
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("results"))
-                {
+                if (args[i].equals("results")) {
                     resultsFileName = args[i + 1];
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("summary"))
-                {
+                if (args[i].equals("summary")) {
                     summaryResultsFileName = args[i + 1];
                     bArgumentRecognised[i] = true;
                     bArgumentRecognised[i + 1] = true;
                 }
-                if(args[i].equals("addToClasspath"))
-                {
+                if (args[i].equals("addToClasspath")) {
                     addToClasspath = args[i + 1];
                     Utilities.addToClassPath(addToClasspath);
                     bArgumentRecognised[i] = true;
@@ -132,61 +117,50 @@ public class WekaCrossValidateInfoGain
             }
         }
 
-        for(int i = 0; i < args.length; i++)
-            if(!bArgumentRecognised[i])
+        for (int i = 0; i < args.length; i++)
+            if (!bArgumentRecognised[i])
                 System.out.println((new StringBuilder("Unrecognised command - wrong spelling or case?: ")).append(args[i]).toString());
 
         ReportParameters(args, minFeatures, maxFeatures, stepFeatures, iterations, classifierName, classifierExclude, addToClasspath, instructionFilename, inputArffFilename, resultsFileName, summaryResultsFileName);
-        if(instructionFilename.equals("-"))
-        {
-            if(inputArffFilename.equals("-") || resultsFileName.equals("-") || summaryResultsFileName.equals("-"))
-            {
+        if (instructionFilename.equals("-")) {
+            if (inputArffFilename.equals("-") || resultsFileName.equals("-") || summaryResultsFileName.equals("-")) {
                 System.out.println("Must specify instructions file or input, results and summary files. Giving up.");
                 return;
             }
             System.out.println((new StringBuilder("started processing ")).append(inputArffFilename).toString());
-            for(int features = minFeatures; features <= maxFeatures; features += stepFeatures)
-            {
+            for (int features = minFeatures; features <= maxFeatures; features += stepFeatures) {
                 System.out.println((new StringBuilder("Starting ")).append(features).append(" features for ").append(inputArffFilename).toString());
-                for(int i = 1; i <= iterations; i++)
-                {
+                for (int i = 1; i <= iterations; i++) {
                     int randomSeed = random.nextInt();
                     lessFeaturesRequestedThanData = classifyArff(inputArffFilename, classifierName, classifierExclude, randomSeed, features, resultsFileName, summaryResultsFileName);
                     System.out.println((new StringBuilder(String.valueOf(i))).append("/").append(iterations).append(" iterations done").toString());
                 }
 
-                if(!lessFeaturesRequestedThanData)
-                {
+                if (!lessFeaturesRequestedThanData) {
                     System.out.println("More features requested than in data last time!");
                     return;
                 }
             }
 
             System.out.println("For correlations, use Windows SentiStrength, Data Mining|Summarise Average... menu item");
-        } else
-        {
+        } else {
             File f = new File(instructionFilename);
-            if(f.exists())
-            {
+            if (f.exists()) {
                 BufferedReader reader;
-                for(reader = new BufferedReader(new FileReader(instructionFilename)); reader.ready();)
-                {
+                for (reader = new BufferedReader(new FileReader(instructionFilename)); reader.ready(); ) {
                     inputArffFilename = reader.readLine();
                     resultsFileName = reader.readLine();
                     summaryResultsFileName = reader.readLine();
                     System.out.println((new StringBuilder("started processing ")).append(inputArffFilename).toString());
-                    for(int features = minFeatures; features <= maxFeatures; features += stepFeatures)
-                    {
+                    for (int features = minFeatures; features <= maxFeatures; features += stepFeatures) {
                         System.out.println((new StringBuilder("Starting ")).append(features).append(" features for ").append(inputArffFilename).toString());
-                        for(int i = 1; i <= iterations + 1; i++)
-                        {
+                        for (int i = 1; i <= iterations + 1; i++) {
                             int randomSeed = random.nextInt();
                             lessFeaturesRequestedThanData = classifyArff(inputArffFilename, classifierName, classifierExclude, randomSeed, features, resultsFileName, summaryResultsFileName);
                             System.out.println((new StringBuilder(String.valueOf(i))).append("/").append(iterations).append(" 10-fold iterations with ").append(features).append(" features done").toString());
                         }
 
-                        if(!lessFeaturesRequestedThanData)
-                        {
+                        if (!lessFeaturesRequestedThanData) {
                             System.out.println("More features requested than in data last time!");
                             reader.close();
                             return;
@@ -196,17 +170,15 @@ public class WekaCrossValidateInfoGain
                 }
 
                 reader.close();
-            } else
-            {
+            } else {
                 System.out.println((new StringBuilder(String.valueOf(instructionFilename))).append(" not found - should contain data file, results file, summary file.").toString());
                 System.out.println("Program terminating without running analysis.");
             }
         }
     }
 
-    public static void ReportParameters(String args[], int minFeatures, int maxFeatures, int stepFeatures, int iterations, String classifierName, String classifierExclude, String addToClasspath, 
-            String instructionFilename, String inputFilename, String resultsFileName, String summaryResultsFileName)
-    {
+    public static void ReportParameters(String args[], int minFeatures, int maxFeatures, int stepFeatures, int iterations, String classifierName, String classifierExclude, String addToClasspath,
+                                        String instructionFilename, String inputFilename, String resultsFileName, String summaryResultsFileName) {
         System.out.println("InfoGain method: default options or values set by command line:");
         System.out.print((new StringBuilder(" ")).append(minFeatures).append(" [min] features, ").toString());
         System.out.print((new StringBuilder(String.valueOf(maxFeatures))).append(" [max] features, ").toString());
@@ -223,8 +195,7 @@ public class WekaCrossValidateInfoGain
     }
 
     public static boolean classifyArff(String arffFileName, String classifierName, String classifierExclude, int randomSeed, int features, String allResultsFilename, String summaryResultsFilename)
-        throws Exception
-    {
+            throws Exception {
         boolean lessFeaturesRequestedThanData = true;
         Date start = Utilities.getNow();
         System.out.print("Loading data ... ");
@@ -237,11 +208,9 @@ public class WekaCrossValidateInfoGain
         randomize.setInputFormat(data);
         data = Filter.useFilter(data, randomize);
         Ranker ranker = new Ranker();
-        if(features < data.numAttributes())
-        {
+        if (features < data.numAttributes()) {
             ranker.setNumToSelect(features);
-        } else
-        {
+        } else {
             ranker.setNumToSelect(data.numAttributes());
             lessFeaturesRequestedThanData = false;
         }
@@ -255,9 +224,8 @@ public class WekaCrossValidateInfoGain
         data = Filter.useFilter(data, attributeSelection);
         String options = null;
         System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-        if(classifierName.indexOf(",liblin,") > 0)
-            try
-            {
+        if (classifierName.indexOf(",liblin,") > 0)
+            try {
                 Utilities.printNameAndWarning("LibLINEAR");
                 start = Utilities.getNow();
                 Utilities.addToClassPath((new StringBuilder(String.valueOf(sgJarFolder))).append("liblinear-1.51.jar").toString());
@@ -268,16 +236,13 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeLibLINEAR, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "LibLin", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with LibLINEAR on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
                 System.out.println((new StringBuilder("Must have jar file in Jar folder ")).append(sgJarFolder).append(" or classpath. Here is the current Java classpath").toString());
                 Utilities.printClasspath();
             }
-        if(classifierName.indexOf(",libsvm,") > 0)
-            try
-            {
+        if (classifierName.indexOf(",libsvm,") > 0)
+            try {
                 Utilities.printNameAndWarning("LibSVM");
                 start = Utilities.getNow();
                 Utilities.addToClassPath((new StringBuilder(String.valueOf(sgJarFolder))).append("libsvm.jar").toString());
@@ -288,16 +253,13 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeLibSVM, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "LibSVM", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with LibSVM on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
                 System.out.println((new StringBuilder("Must have jar file in Jar folder ")).append(sgJarFolder).append(" or classpath. Here is the current Java classpath").toString());
                 Utilities.printClasspath();
             }
-        if((classifierName.indexOf(",smo,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
-            try
-            {
+        if ((classifierName.indexOf(",smo,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
+            try {
                 Utilities.printNameAndWarning("SMO   ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -307,16 +269,13 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeSMO, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "SMO", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SMO on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
                 System.out.println("Must have jar file in classpath (not dir!). Here is the current Java classpath");
                 Utilities.printClasspath();
             }
-        if((classifierName.indexOf(",slog,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SLOG"))
-            try
-            {
+        if ((classifierName.indexOf(",slog,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SLOG"))
+            try {
                 Utilities.printNameAndWarning("SLOG  ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -326,14 +285,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeSLOG, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "SLOG", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SLOG on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",bayes,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("BAYES"))
-            try
-            {
+        if ((classifierName.indexOf(",bayes,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("BAYES"))
+            try {
                 Utilities.printNameAndWarning("BAYES ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -341,14 +297,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeBayes, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "BAYES", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with BAYES on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",ada,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("ADA"))
-            try
-            {
+        if ((classifierName.indexOf(",ada,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("ADA"))
+            try {
                 Utilities.printNameAndWarning("ADA   ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -358,14 +311,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeAda, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "ADA", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with ADA on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",smoreg,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMOreg"))
-            try
-            {
+        if ((classifierName.indexOf(",smoreg,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMOreg"))
+            try {
                 Utilities.printNameAndWarning("SMOreg");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -375,14 +325,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeSMOreg, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "SMOreg", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SMOreg on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",jrip,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("JRIP"))
-            try
-            {
+        if ((classifierName.indexOf(",jrip,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("JRIP"))
+            try {
                 Utilities.printNameAndWarning("JRIP  ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -392,14 +339,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeJrip, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "JRIP", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with JRIP on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",dec,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("DEC"))
-            try
-            {
+        if ((classifierName.indexOf(",dec,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("DEC"))
+            try {
                 Utilities.printNameAndWarning("DEC   ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -409,14 +353,11 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeDec, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "DEC", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with DEC on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",j48,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("J48"))
-            try
-            {
+        if ((classifierName.indexOf(",j48,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("J48"))
+            try {
                 Utilities.printNameAndWarning("J48   ");
                 start = Utilities.getNow();
                 Evaluation eval = new Evaluation(data);
@@ -426,17 +367,14 @@ public class WekaCrossValidateInfoGain
                 eval.crossValidateModel(schemeJ48, data, 10, new Random(randomSeed), new Object[0]);
                 PrintClassificationResults(eval, arffFileName, "J48", randomSeed, features, options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with J48 on ")).append(arffFileName).append(" ").append(e.getMessage()).toString());
             }
         return lessFeaturesRequestedThanData;
     }
 
     public static void PrintClassificationResults(Evaluation eval, String arffFilename, String classifierName, int randomSeed, int features, String options, String allResultsFilename, String summaryResultsFilename)
-        throws Exception
-    {
+            throws Exception {
         FileOutputStream fout = new FileOutputStream(allResultsFilename, true);
         PrintStream allResultsPrintStream = new PrintStream(fout);
         allResultsPrintStream.println();

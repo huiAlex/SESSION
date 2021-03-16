@@ -16,10 +16,11 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Locale;
+
 import util.FileOps;
 
 public class SentiStrength {
-	Corpus c = new Corpus();
+    Corpus c = new Corpus();
 
     public SentiStrength() {
         this.c = new Corpus();
@@ -64,11 +65,11 @@ public class SentiStrength {
         boolean bURLEncoded = false;
         String sLanguage = "";
         int i;
-        for(i = 0; i < args.length; ++i) {
+        for (i = 0; i < args.length; ++i) {
             bArgumentRecognised[i] = false;
         }
 
-        for(i = 0; i < args.length; ++i) {
+        for (i = 0; i < args.length; ++i) {
             try {
                 if (args[i].equalsIgnoreCase("-input")) {
                     sInputFile = args[i + 1];
@@ -229,7 +230,7 @@ public class SentiStrength {
             Locale.setDefault(l);
         }
 
-        for(i = 0; i < args.length; ++i) {
+        for (i = 0; i < args.length; ++i) {
             if (!bArgumentRecognised[i]) {
                 System.out.println("Unrecognised command - wrong spelling or case?: " + args[i]);
                 this.showBriefHelp();
@@ -326,7 +327,7 @@ public class SentiStrength {
     }
 
     private void parseParametersForCorpusOptions(String[] args, boolean[] bArgumentRecognised) {
-        for(int i = 0; i < args.length; ++i) {
+        for (int i = 0; i < args.length; ++i) {
             try {
                 if (args[i].equalsIgnoreCase("sentidata")) {
                     this.c.resources.sgSentiStrengthFolder = args[i + 1];
@@ -458,38 +459,38 @@ public class SentiStrength {
                     this.c.options.bgReduceNegativeEmotionInQuestionSentences = true;
                     bArgumentRecognised[i] = true;
                 }
-                
+
                 if (args[i].equalsIgnoreCase("DealWithdhsf")) {
-                    this.c.options.bgDealWithdhsf=true;
+                    this.c.options.bgDealWithdhsf = true;
                     bArgumentRecognised[i] = true;
                 }
-                
+
                 if (args[i].equalsIgnoreCase("DealWithConj")) {
-                    this.c.options.bgDealWithConj=true;
+                    this.c.options.bgDealWithConj = true;
                     bArgumentRecognised[i] = true;
                 }
-                
+
                 if (args[i].equalsIgnoreCase("noDealWithPreprocess")) {
-                    this.c.options.bgPreprocess=false;
+                    this.c.options.bgPreprocess = false;
                     bArgumentRecognised[i] = true;
                 }
                 if (args[i].equalsIgnoreCase("noDealWithRule_Trigger")) {
-                    this.c.options.bgLydian=false;
+                    this.c.options.bgLydian = false;
                     bArgumentRecognised[i] = true;
                 }
                 if (args[i].equalsIgnoreCase("noDealWithPolysemy")) {
-                    this.c.options.bgDealWithPolysemy=false;
+                    this.c.options.bgDealWithPolysemy = false;
                     bArgumentRecognised[i] = true;
                 }
                 if (args[i].equalsIgnoreCase("noDealWithSubjunctiveMood")) {
-                    this.c.options.bgDealWithIf=false;
+                    this.c.options.bgDealWithIf = false;
                     bArgumentRecognised[i] = true;
                 }
                 if (args[i].equalsIgnoreCase("noDealWithNegative")) {
-                    this.c.options.bgDealWithNegative=false;
+                    this.c.options.bgDealWithNegative = false;
                     bArgumentRecognised[i] = true;
                 }
-                
+
                 if (args[i].equalsIgnoreCase("noEmoticons")) {
                     this.c.options.bgUseEmoticons = false;
                     bArgumentRecognised[i] = true;
@@ -654,13 +655,13 @@ public class SentiStrength {
         boolean[] bArgumentRecognised = new boolean[args.length];
 
         int i;
-        for(i = 0; i < args.length; ++i) {
+        for (i = 0; i < args.length; ++i) {
             bArgumentRecognised[i] = false;
         }
 
         this.parseParametersForCorpusOptions(args, bArgumentRecognised);
 
-        for(i = 0; i < args.length; ++i) {
+        for (i = 0; i < args.length; ++i) {
             if (!bArgumentRecognised[i]) {
                 System.out.println("Unrecognised command - wrong spelling or case?: " + args[i]);
                 this.showBriefHelp();
@@ -675,11 +676,11 @@ public class SentiStrength {
     }
 
     public String computeSentimentScores(String sentence) {
-    	
-        int iPos =1;
-        int iNeg =1;
-        int iTrinary =0;
-        int iScale =0;
+
+        int iPos = 1;
+        int iNeg = 1;
+        int iTrinary = 0;
+        int iScale = 0;
         Paragraph paragraph = new Paragraph();
         paragraph.setParagraph(sentence, this.c.resources, this.c.options);
         iNeg = paragraph.getParagraphNegativeSentiment();
@@ -712,9 +713,9 @@ public class SentiStrength {
             int corpusSize = c.getCorpusSize();
             if (c.options.bgTrinaryMode) {
                 if (c.options.bgBinaryVersionOfTrinaryMode) {
-                    System.out.print("Before training, binary accuracy: " + c.getClassificationTrinaryNumberCorrect() + " " + (float)c.getClassificationTrinaryNumberCorrect() / (float)corpusSize * 100.0F + "%");
+                    System.out.print("Before training, binary accuracy: " + c.getClassificationTrinaryNumberCorrect() + " " + (float) c.getClassificationTrinaryNumberCorrect() / (float) corpusSize * 100.0F + "%");
                 } else {
-                    System.out.print("Before training, trinary accuracy: " + c.getClassificationTrinaryNumberCorrect() + " " + (float)c.getClassificationTrinaryNumberCorrect() / (float)corpusSize * 100.0F + "%");
+                    System.out.print("Before training, trinary accuracy: " + c.getClassificationTrinaryNumberCorrect() + " " + (float) c.getClassificationTrinaryNumberCorrect() / (float) corpusSize * 100.0F + "%");
                 }
             } else if (c.options.bgScaleMode) {
                 System.out.print("Before training, scale accuracy: " + c.getClassificationScaleNumberCorrect() + " " + c.getClassificationScaleNumberCorrect() * 100.0F / corpusSize + "% corr " + c.getClassificationScaleCorrelationWholeCorpus());
@@ -753,7 +754,7 @@ public class SentiStrength {
                 return;
             }
 
-            for(int i = 0; i < listOfFiles.length; ++i) {
+            for (int i = 0; i < listOfFiles.length; ++i) {
                 if (listOfFiles[i].isFile()) {
                     System.out.println("Classify + save with ID: " + listOfFiles[i].getName());
                     c.classifyAllLinesAndRecordWithID(sInputFolder + "/" + listOfFiles[i].getName(), iTextCol - 1, iIdCol - 1, sInputFolder + "/" + FileOps.s_ChopFileNameExtension(listOfFiles[i].getName()) + "_classID.txt");
@@ -779,7 +780,7 @@ public class SentiStrength {
                 File folder = new File(sInputFolder);
                 File[] listOfFiles = folder.listFiles();
 
-                for(int i = 0; i < listOfFiles.length; ++i) {
+                for (int i = 0; i < listOfFiles.length; ++i) {
                     if (listOfFiles[i].isFile()) {
                         if (!sFileSubString.equals("") && listOfFiles[i].getName().indexOf(sFileSubString) <= 0) {
                             System.out.println("  Ignoring " + listOfFiles[i].getName());
@@ -795,10 +796,10 @@ public class SentiStrength {
     }
 
     private void parseOneText(Corpus c, String sTextToParse, boolean bURLEncodedOutput) {
-        int iPos =1;
-        int iNeg =1;
-        int iTrinary =0;
-        int iScale =0;
+        int iPos = 1;
+        int iNeg = 1;
+        int iTrinary = 0;
+        int iScale = 0;
         Paragraph paragraph = new Paragraph();
         paragraph.setParagraph(sTextToParse, c.resources, c.options);
         iNeg = paragraph.getParagraphNegativeSentiment();
@@ -847,7 +848,7 @@ public class SentiStrength {
 
         String sTextToParse;
         try {
-            while((sTextToParse = stdin.readLine()) != null) {
+            while ((sTextToParse = stdin.readLine()) != null) {
                 boolean bSuccess;
                 if (sTextToParse.indexOf("#Change_TermWeight") >= 0) {
                     String[] sData = sTextToParse.split("\t");
@@ -858,10 +859,10 @@ public class SentiStrength {
                         System.out.println("0");
                     }
                 } else {
-                    int iPos =1;
+                    int iPos = 1;
                     bSuccess = true;
-                    int iTrinary =0;
-                    int iScale =0;
+                    int iTrinary = 0;
+                    int iScale = 0;
                     Paragraph paragraph = new Paragraph();
                     if (iTextCol > -1) {
                         String[] sData = sTextToParse.split("\t");
@@ -918,18 +919,18 @@ public class SentiStrength {
     private void listenForCmdInput(Corpus c) {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
-        while(true) {
-            while(true) {
+        while (true) {
+            while (true) {
                 try {
-                    while(true) {
+                    while (true) {
                         String sTextToParse = stdin.readLine();
                         if (sTextToParse.toLowerCase().equals("@end")) {
                             return;
                         }
-                        int iPos =1;
-                        int iNeg =1;
-                        int iTrinary =0;
-                        int iScale =0;
+                        int iPos = 1;
+                        int iNeg = 1;
+                        int iTrinary = 0;
+                        int iScale = 0;
                         Paragraph paragraph = new Paragraph();
                         paragraph.setParagraph(sTextToParse, c.resources, c.options);
                         iNeg = paragraph.getParagraphNegativeSentiment();
@@ -986,7 +987,7 @@ public class SentiStrength {
 
         System.out.println("Listening on port: " + iListenPort + " IP: " + serverSocket.getInetAddress());
 
-        while(true) {
+        while (true) {
             Socket clientSocket = null;
 
             try {
@@ -1016,7 +1017,7 @@ public class SentiStrength {
 
             String inputLine;
             try {
-                while((inputLine = in.readLine()) != null) {
+                while ((inputLine = in.readLine()) != null) {
                     if (inputLine.indexOf("GET /") == 0) {
                         int lastSpacePos = inputLine.lastIndexOf(" ");
                         if (lastSpacePos < 5) {
@@ -1041,10 +1042,10 @@ public class SentiStrength {
                 decodedText = "";
             }
 
-            int iPos =1;
+            int iPos = 1;
             int iNeg = 1;
-            int iTrinary =0;
-            int iScale =0;
+            int iTrinary = 0;
+            int iScale = 0;
             Paragraph paragraph = new Paragraph();
             paragraph.setParagraph(decodedText, c.resources, c.options);
             iNeg = paragraph.getParagraphNegativeSentiment();

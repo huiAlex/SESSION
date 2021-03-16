@@ -10,15 +10,12 @@ import java.io.PrintStream;
 // Referenced classes of package uk.ac.wlv.utilities:
 //            SentiStrengthOld
 
-public class HelpOld
-{
+public class HelpOld {
 
-    public HelpOld()
-    {
+    public HelpOld() {
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         System.out.println("Methods available in this package:");
         System.out.println("sentiStrength - all SentiStrength classification features except idioms");
         System.out.println("sentiStrengthTestApplet - for testing SentiStrength in an applet");
@@ -40,14 +37,12 @@ public class HelpOld
         System.out.println("e.g., whether to use negating words");
         System.out.println();
         String sTextToTranslate = "";
-        for(int i = 0; i < args.length; i++)
+        for (int i = 0; i < args.length; i++)
             sTextToTranslate = (new StringBuilder(String.valueOf(sTextToTranslate))).append(args[i]).append(" ").toString();
 
-        if(sTextToTranslate != "")
-        {
+        if (sTextToTranslate != "") {
             SentiStrengthOld ss = new SentiStrengthOld();
-            if(ss.initialise())
-            {
+            if (ss.initialise()) {
                 ss.detectEmotionInText(sTextToTranslate.trim());
                 System.out.println(ss.getOriginalText());
                 System.out.println("was tagged as:");

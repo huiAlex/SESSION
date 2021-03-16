@@ -14,8 +14,7 @@ import java.awt.event.ActionListener;
 //            SentiStrengthOld
 
 public class SentiStrengthTestAppletOld extends Applet
-    implements ActionListener
-{
+        implements ActionListener {
 
     private static final long serialVersionUID = 0x858280b1L;
     Font fntTimesNewRoman;
@@ -25,16 +24,14 @@ public class SentiStrengthTestAppletOld extends Applet
     SentiStrengthOld ss;
     boolean bgSentiStrengthOK;
 
-    public SentiStrengthTestAppletOld()
-    {
+    public SentiStrengthTestAppletOld() {
         fntTimesNewRoman = new Font("TimesRoman", 1, 36);
         sgEnteredText = "";
         tfField = new TextField(12);
         bgSentiStrengthOK = false;
     }
 
-    public void init()
-    {
+    public void init() {
         ss = new SentiStrengthOld();
         bgSentiStrengthOK = ss.initialise();
         setBackground(Color.lightGray);
@@ -42,26 +39,21 @@ public class SentiStrengthTestAppletOld extends Applet
         add(tfField);
     }
 
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         g.setFont(fntTimesNewRoman);
-        if(bgSentiStrengthOK)
-        {
+        if (bgSentiStrengthOK) {
             g.drawString("sentiStrength successfully initialised", 100, 75);
-        } else
-        {
+        } else {
             g.drawString("Error - can't initalise sentiStrength", 100, 75);
             g.drawString(ss.getErrorLog(), 100, 125);
         }
-        if(sgEnteredText != "")
-            if(sgEnteredText.indexOf("\\") >= 0)
-            {
-                if(ss.classifyAllTextInFile(sgEnteredText, (new StringBuilder(String.valueOf(sgEnteredText))).append("_output.txt").toString()))
+        if (sgEnteredText != "")
+            if (sgEnteredText.indexOf("\\") >= 0) {
+                if (ss.classifyAllTextInFile(sgEnteredText, (new StringBuilder(String.valueOf(sgEnteredText))).append("_output.txt").toString()))
                     g.drawString("No problem with text file classification", 10, 275);
                 else
                     g.drawString("Text file classification failed", 10, 275);
-            } else
-            {
+            } else {
                 ss.detectEmotionInText(sgEnteredText);
                 g.drawString(ss.getOriginalText(), 10, 225);
                 g.drawString("was tagged as:", 100, 275);
@@ -70,8 +62,7 @@ public class SentiStrengthTestAppletOld extends Applet
             }
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         sgEnteredText = tfField.getText();
         repaint();
     }

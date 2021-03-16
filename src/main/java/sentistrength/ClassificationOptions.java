@@ -28,16 +28,16 @@ public class ClassificationOptions {
     public int igEmotionSentenceCombineMethod = 0;
     public float fgNegativeSentimentMultiplier = 1.5F;
     public boolean bgReduceNegativeEmotionInQuestionSentences = false;
-    
-    public boolean bgPreprocess=true;
-    public boolean bgLydian=true;
-    public boolean bgDealWithPolysemy=true;
-    public boolean bgDealWithIf=true;
-    public boolean bgDealWithNegative=true;
-    
-    public boolean bgDealWithCap=true;
-    public boolean bgDealWithdhsf=false;
-    public boolean bgDealWithConj=false;
+
+    public boolean bgPreprocess = true;
+    public boolean bgLydian = true;
+    public boolean bgDealWithPolysemy = true;
+    public boolean bgDealWithIf = true;
+    public boolean bgDealWithNegative = true;
+
+    public boolean bgDealWithCap = true;
+    public boolean bgDealWithdhsf = false;
+    public boolean bgDealWithConj = false;
     public boolean bgMissCountsAsPlus2 = true;
     public boolean bgYouOrYourIsPlus2UnlessSentenceNegative = false;
     public boolean bgExclamationInNeutralSentenceCountsAsPlus2 = false;
@@ -147,7 +147,7 @@ public class ClassificationOptions {
         try {
             BufferedReader rReader = new BufferedReader(new FileReader(sFilename));
 
-            while(rReader.ready()) {
+            while (rReader.ready()) {
                 String sLine = rReader.readLine();
                 int iTabPos = sLine.indexOf("\t");
                 if (iTabPos > 0) {

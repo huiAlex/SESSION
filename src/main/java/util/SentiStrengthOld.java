@@ -165,7 +165,7 @@ public class SentiStrengthOld {
             BufferedReader rReader = new BufferedReader(new FileReader(sInFilenameAndPath));
             BufferedWriter wWriter = new BufferedWriter(new FileWriter(sOutFilenameAndPath));
 
-            while(rReader.ready()) {
+            while (rReader.ready()) {
                 String sLine = rReader.readLine();
                 if (sLine != "") {
                     int iTabPos = sLine.lastIndexOf("\t");
@@ -193,10 +193,10 @@ public class SentiStrengthOld {
 
     private boolean b_TagOriginalText() {
         this.sgTaggedText = "";
-        int iCharacter =1;
-        int iPunctuation =1;
-        int iSpace =1;
-        int iEmoticon =1;
+        int iCharacter = 1;
+        int iPunctuation = 1;
+        int iSpace = 1;
+        int iEmoticon = 1;
         int iPos = 0;
         int iStartOfElement = 0;
         int iLastCharType = 0;
@@ -204,39 +204,39 @@ public class SentiStrengthOld {
         String sEm = "";
         String sChar = "";
 
-        for(int iTextLength = this.sgOriginalText.length(); iPos < iTextLength; ++iPos) {
+        for (int iTextLength = this.sgOriginalText.length(); iPos < iTextLength; ++iPos) {
             sChar = this.sgOriginalText.substring(iPos, iPos + 1);
             if (sChar.compareTo("'") != 0 && (sChar.compareToIgnoreCase("a") < 0 || sChar.compareToIgnoreCase("z") > 0)) {
                 if (sChar.compareTo(" ") == 0) {
-                    switch(iLastCharType) {
-                    case 1:
-                        this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
-                        iStartOfElement = iPos;
-                        break;
-                    case 2:
-                        this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement, iPos));
-                        iStartOfElement = iPos;
-                    case 3:
-                    default:
-                        break;
-                    case 4:
-                        iStartOfElement = iPos;
+                    switch (iLastCharType) {
+                        case 1:
+                            this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
+                            iStartOfElement = iPos;
+                            break;
+                        case 2:
+                            this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement, iPos));
+                            iStartOfElement = iPos;
+                        case 3:
+                        default:
+                            break;
+                        case 4:
+                            iStartOfElement = iPos;
                     }
 
                     iLastCharType = 3;
                 } else if (sChar.compareTo("<") == 0) {
-                    switch(iLastCharType) {
-                    case 1:
-                        this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
-                        iStartOfElement = iPos;
-                        break;
-                    case 2:
-                    case 3:
-                        this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
-                        iStartOfElement = iPos;
-                        break;
-                    case 4:
-                        iStartOfElement = iPos;
+                    switch (iLastCharType) {
+                        case 1:
+                            this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
+                            iStartOfElement = iPos;
+                            break;
+                        case 2:
+                        case 3:
+                            this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
+                            iStartOfElement = iPos;
+                            break;
+                        case 4:
+                            iStartOfElement = iPos;
                     }
 
                     if (iPos + 3 < iTextLength && this.sgOriginalText.substring(iPos, iPos + 4).compareToIgnoreCase("<br>") == 0) {
@@ -251,29 +251,29 @@ public class SentiStrengthOld {
                         iLastCharType = 2;
                     }
                 } else if (sChar.compareTo(">") != 0 && sChar.compareTo("(") != 0 && sChar.compareTo(")") != 0 && sChar.compareTo("\"") != 0 && sChar.compareTo(",") != 0 && sChar.compareTo(":") != 0 && sChar.compareTo(";") != 0 && sChar.compareTo(".") != 0 && sChar.compareTo("?") != 0 && sChar.compareTo("!") != 0 && sChar.compareTo("~") != 0 && sChar.compareTo("-") != 0 && sChar.compareTo("*") != 0) {
-                    switch(iLastCharType) {
-                    case 3:
-                        this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
-                        iStartOfElement = iPos;
-                    case 1:
-                    case 2:
-                    default:
-                        iLastCharType = 1;
+                    switch (iLastCharType) {
+                        case 3:
+                            this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
+                            iStartOfElement = iPos;
+                        case 1:
+                        case 2:
+                        default:
+                            iLastCharType = 1;
                     }
                 } else {
-                    switch(iLastCharType) {
-                    case 1:
-                        this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
-                        iStartOfElement = iPos;
-                    case 2:
-                    default:
-                        break;
-                    case 3:
-                        this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
-                        iStartOfElement = iPos;
-                        break;
-                    case 4:
-                        iStartOfElement = iPos;
+                    switch (iLastCharType) {
+                        case 1:
+                            this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement, iPos));
+                            iStartOfElement = iPos;
+                        case 2:
+                        default:
+                            break;
+                        case 3:
+                            this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
+                            iStartOfElement = iPos;
+                            break;
+                        case 4:
+                            iStartOfElement = iPos;
                     }
 
                     sEmoticon = this.s_ExtractEmoticon(this.sgOriginalText, iPos);
@@ -288,35 +288,35 @@ public class SentiStrengthOld {
                     }
                 }
             } else {
-                switch(iLastCharType) {
-                case 1:
-                default:
-                    break;
-                case 2:
-                    this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement, iPos));
-                    iStartOfElement = iPos;
-                    break;
-                case 3:
-                    this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
-                    iStartOfElement = iPos;
-                    break;
-                case 4:
-                    iStartOfElement = iPos;
+                switch (iLastCharType) {
+                    case 1:
+                    default:
+                        break;
+                    case 2:
+                        this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement, iPos));
+                        iStartOfElement = iPos;
+                        break;
+                    case 3:
+                        this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement, iPos);
+                        iStartOfElement = iPos;
+                        break;
+                    case 4:
+                        iStartOfElement = iPos;
                 }
 
                 iLastCharType = 1;
             }
         }
 
-        switch(iLastCharType) {
-        case 1:
-            this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement));
-            break;
-        case 2:
-            this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement));
-            break;
-        case 3:
-            this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement);
+        switch (iLastCharType) {
+            case 1:
+                this.sgTaggedText = this.sgTaggedText + this.s_MakeWordTag(this.sgOriginalText.substring(iStartOfElement));
+                break;
+            case 2:
+                this.sgTaggedText = this.sgTaggedText + this.s_PunctuationTag(this.sgOriginalText.substring(iStartOfElement));
+                break;
+            case 3:
+                this.sgTaggedText = this.sgTaggedText + this.sgOriginalText.substring(iStartOfElement);
         }
 
         return true;
@@ -329,7 +329,7 @@ public class SentiStrengthOld {
         String sChar = "";
         int iLast = sPunctuation.length() - 1;
 
-        for(int i = 0; i <= iLast; ++i) {
+        for (int i = 0; i <= iLast; ++i) {
             sChar = sPunctuation.substring(i, i + 1);
             if (sChar.compareTo(".") == 0 || sChar.compareTo("!") == 0 || sChar.compareTo("?") == 0) {
                 sBr = "<br>";
@@ -377,15 +377,15 @@ public class SentiStrengthOld {
                     if (iEmoticon < 1) {
                         return "";
                     } else {
-                        switch(this.igEmoticonStrength[iEmoticon]) {
-                        case -1:
-                            this.sgTempEmoticonEmphasis = "-";
-                            break;
-                        case 0:
-                            this.sgTempEmoticonEmphasis = "";
-                            break;
-                        case 1:
-                            this.sgTempEmoticonEmphasis = "+";
+                        switch (this.igEmoticonStrength[iEmoticon]) {
+                            case -1:
+                                this.sgTempEmoticonEmphasis = "-";
+                                break;
+                            case 0:
+                                this.sgTempEmoticonEmphasis = "";
+                                break;
+                            case 1:
+                                this.sgTempEmoticonEmphasis = "+";
                         }
 
                         return sEmoticon;
@@ -406,7 +406,7 @@ public class SentiStrengthOld {
             int iWordEnd = sWord.length() - 1;
 
             int iPos;
-            for(iPos = 1; iPos <= iWordEnd; ++iPos) {
+            for (iPos = 1; iPos <= iWordEnd; ++iPos) {
                 if (sWord.substring(iPos, iPos + 1).compareTo(sWord.substring(iPos - 1, iPos)) == 0) {
                     ++iSameCount;
                 } else {
@@ -484,7 +484,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgEmoticonLookupTable));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             String[] sData = sLine.split("\t");
@@ -510,8 +510,8 @@ public class SentiStrengthOld {
     }
 
     private boolean b_LoadSentimentWords() {
-        int iLinesInFile =0;
-        int iWordStrength =0;
+        int iLinesInFile = 0;
+        int iWordStrength = 0;
         if (this.sgSentimentWordsFile == "") {
             return false;
         } else {
@@ -528,7 +528,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgSentimentWordsFile));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             int iFirstTabLocation = sLine.indexOf("\t");
@@ -580,8 +580,8 @@ public class SentiStrengthOld {
     }
 
     private boolean b_LoadBoosterWords() {
-        int iLinesInFile =0;
-        int iWordStrength =0;
+        int iLinesInFile = 0;
+        int iWordStrength = 0;
         if (this.sgBoosterListFile == "") {
             return false;
         } else {
@@ -598,7 +598,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgBoosterListFile));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             int iFirstTabLocation = sLine.indexOf("\t");
@@ -646,7 +646,7 @@ public class SentiStrengthOld {
     private String s_CorrectSpellingInWord(String sWord) {
         int iLastChar = sWord.length() - 1;
 
-        for(int iPos = 1; iPos <= iLastChar; ++iPos) {
+        for (int iPos = 1; iPos <= iLastChar; ++iPos) {
             if (sWord.substring(iPos, iPos + 1).compareTo(sWord.substring(iPos - 1, iPos)) == 0) {
                 String sReplaceWord = sWord.substring(0, iPos) + sWord.substring(iPos + 1);
                 if (Sort.i_FindStringPositionInSortedArray(sWord, this.sgCorrectWord, 1, this.igCorrectWordCount) > 0) {
@@ -689,7 +689,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgNegatingWordListFile));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             ++this.igNegatingWordCount;
@@ -724,7 +724,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgCorrectSpellingFileName));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             ++this.igCorrectWordCount;
@@ -746,7 +746,7 @@ public class SentiStrengthOld {
     }
 
     private String s_ReplaceWithEquivalentSlangWordOrPhrase_dont_use(String sWord) {
-        int iNewWord =0;
+        int iNewWord = 0;
         if (this.igSlangWordCount > 0) {
             iNewWord = Sort.i_FindStringPositionInSortedArray(sWord, this.sgSlangWord, 1, this.igSlangWordCount);
             if (iNewWord > 0) {
@@ -758,7 +758,7 @@ public class SentiStrengthOld {
     }
 
     private boolean b_LoadSlang() {
-        int iLinesInFile =0;
+        int iLinesInFile = 0;
         if (this.sgSlangLookupTable == "") {
             return false;
         } else {
@@ -776,7 +776,7 @@ public class SentiStrengthOld {
                 try {
                     BufferedReader rReader = new BufferedReader(new FileReader(this.sgSentiStrengthFolder + this.sgSlangLookupTable));
 
-                    while(rReader.ready()) {
+                    while (rReader.ready()) {
                         String sLine = rReader.readLine();
                         if (sLine != "") {
                             int iFirstTabLocation = sLine.indexOf("\t");
@@ -837,7 +837,7 @@ public class SentiStrengthOld {
 
                     int iLastEnd = 0;
 
-                    while(iPosition > 0 && this.igTaggedSentenceCount < this.igTaggedSentenceMax) {
+                    while (iPosition > 0 && this.igTaggedSentenceCount < this.igTaggedSentenceMax) {
                         ++this.igTaggedSentenceCount;
                         this.sgTaggedSentence[this.igTaggedSentenceCount] = this.sgTaggedText.substring(iLastEnd, iPosition);
                         this.DetectEmotionInSentence(iPosSent, iNegSent, this.igTaggedSentenceCount);
@@ -855,7 +855,7 @@ public class SentiStrengthOld {
                     this.igTextPos = 0;
                     this.igTextNeg = 0;
 
-                    for(int iSentence = 1; iSentence <= this.igTaggedSentenceCount; ++iSentence) {
+                    for (int iSentence = 1; iSentence <= this.igTaggedSentenceCount; ++iSentence) {
                         iNegTotal += iNegSent[iSentence];
                         if (iNegMax > iNegSent[iSentence]) {
                             iNegMax = iNegSent[iSentence];
@@ -868,8 +868,8 @@ public class SentiStrengthOld {
                     }
 
                     if (this.igEmotionParagraphCombineMethod == 1) {
-                        this.igTextPos = (int)(((double)iPosTotal + 0.5D) / (double)this.igTaggedSentenceCount);
-                        this.igTextNeg = (int)(((double)iNegTotal + 0.5D) / (double)this.igTaggedSentenceCount);
+                        this.igTextPos = (int) (((double) iPosTotal + 0.5D) / (double) this.igTaggedSentenceCount);
+                        this.igTextNeg = (int) (((double) iNegTotal + 0.5D) / (double) this.igTaggedSentenceCount);
                     } else if (this.igEmotionParagraphCombineMethod == 0) {
                         this.igTextPos = iPosMax;
                         this.igTextNeg = iNegMax;
@@ -899,15 +899,15 @@ public class SentiStrengthOld {
             iPositive[iSentence] = 0;
             iNegative[iSentence] = 0;
         } else {
-            for(int iWord = 1; iWord <= iWordTotal; ++iWord) {
+            for (int iWord = 1; iWord <= iWordTotal; ++iWord) {
                 if (fWordEmotion[iWord] < 0.0F) {
-                    iTotalNeg = (int)((float)iTotalNeg + fWordEmotion[iWord]);
-                    if ((float)iMaxNeg > fWordEmotion[iWord]) {
+                    iTotalNeg = (int) ((float) iTotalNeg + fWordEmotion[iWord]);
+                    if ((float) iMaxNeg > fWordEmotion[iWord]) {
                         iMaxNeg = Math.round(fWordEmotion[iWord]);
                     }
                 } else if (fWordEmotion[iWord] > 0.0F) {
-                    iTotalPos = (int)((float)iTotalPos + fWordEmotion[iWord]);
-                    if ((float)iMaxPos < fWordEmotion[iWord]) {
+                    iTotalPos = (int) ((float) iTotalPos + fWordEmotion[iWord]);
+                    if ((float) iMaxPos < fWordEmotion[iWord]) {
                         iMaxPos = Math.round(fWordEmotion[iWord]);
                     }
                 }
@@ -918,8 +918,8 @@ public class SentiStrengthOld {
             iTotalNeg -= iWordTotal;
             iTotalPos += iWordTotal;
             if (this.igEmotionSentenceCombineMethod == 1) {
-                iPositive[iSentence] = (int)(((double)iTotalPos + 0.5D) / (double)iWordTotal);
-                iNegative[iSentence] = (int)(((double)iTotalNeg + 0.5D) / (double)iWordTotal);
+                iPositive[iSentence] = (int) (((double) iTotalPos + 0.5D) / (double) iWordTotal);
+                iNegative[iSentence] = (int) (((double) iTotalNeg + 0.5D) / (double) iWordTotal);
             } else if (this.igEmotionSentenceCombineMethod == 0) {
                 iPositive[iSentence] = iMaxPos;
                 iNegative[iSentence] = iMaxNeg;
@@ -956,14 +956,14 @@ public class SentiStrengthOld {
         String[] sWord = new String[8];
         String sNextChar = "";
         int iPos = 0;
-        int iWordID =0;
+        int iWordID = 0;
         int iWordsSinceNegative = 0;
         int iWordTotal = 0;
         int iLastWordBoosterStrength = 0;
         int iEnd = this.sgTaggedSentence[iSentence].length() - 1;
         boolean bLastWordNegates = false;
 
-        while(iPos < iEnd && iWordTotal < 100) {
+        while (iPos < iEnd && iWordTotal < 100) {
             sNextChar = this.sgTaggedSentence[iSentence].substring(iPos, iPos + 1);
             if (sNextChar.compareTo("<") != 0) {
                 ++iPos;
@@ -976,24 +976,24 @@ public class SentiStrengthOld {
                         ++iWordTotal;
                         iWordID = Sort.i_FindStringPositionInSortedArrayWithWildcardsInArray(sWord[1].toLowerCase(), this.sgSentimentWords, 1, this.igSentimentWordsCount);
                         if (iWordID >= 0) {
-                            fWordEmotion[iWordTotal] = (float)this.igSentimentWordsStrengthTake1[iWordID];
+                            fWordEmotion[iWordTotal] = (float) this.igSentimentWordsStrengthTake1[iWordID];
                         } else {
                             fWordEmotion[iWordTotal] = 0.0F;
                         }
 
                         if (this.bgCountMultipleLettersAsEmotionBoosters && sWord[2].length() >= this.igMinRepeatedLettersForBoost) {
                             if (fWordEmotion[iWordTotal] < 0.0F) {
-                                fWordEmotion[iWordTotal] = (float)((double)fWordEmotion[iWordTotal] - 0.6D);
+                                fWordEmotion[iWordTotal] = (float) ((double) fWordEmotion[iWordTotal] - 0.6D);
                             } else if ((this.bgCountNeutralEmotionsAsPositiveForEmphasis || fWordEmotion[iWordTotal] > 1.0F) && sWord[2].indexOf("xx") < 0 && sWord[2].indexOf("ww") < 0 && (sWord[2].indexOf("h") < 0 || sWord[2].indexOf("a") < 0)) {
-                                fWordEmotion[iWordTotal] = (float)((double)fWordEmotion[iWordTotal] + 0.6D);
+                                fWordEmotion[iWordTotal] = (float) ((double) fWordEmotion[iWordTotal] + 0.6D);
                             }
                         }
 
                         if (iLastWordBoosterStrength != 0 && this.bgBoosterWordsIncreaseEmotion) {
                             if (fWordEmotion[iWordTotal] < 0.0F) {
-                                fWordEmotion[iWordTotal] -= (float)iLastWordBoosterStrength;
+                                fWordEmotion[iWordTotal] -= (float) iLastWordBoosterStrength;
                             } else if (fWordEmotion[iWordTotal] > 1.0F) {
-                                fWordEmotion[iWordTotal] += (float)iLastWordBoosterStrength;
+                                fWordEmotion[iWordTotal] += (float) iLastWordBoosterStrength;
                             }
                         }
 
@@ -1030,9 +1030,9 @@ public class SentiStrengthOld {
                     iPos = this.i_GetPunctuationFromTaggedText(iSentence, iPos, sWord);
                     if (sWord[5] != "" && sWord[5].indexOf("!") >= 0) {
                         if (fWordEmotion[iWordTotal] < 0.0F) {
-                            fWordEmotion[iWordTotal] = (float)((double)fWordEmotion[iWordTotal] - 0.6D);
+                            fWordEmotion[iWordTotal] = (float) ((double) fWordEmotion[iWordTotal] - 0.6D);
                         } else if (this.bgCountNeutralEmotionsAsPositiveForEmphasis || fWordEmotion[iWordTotal] > 1.0F) {
-                            fWordEmotion[iWordTotal] = (float)((double)fWordEmotion[iWordTotal] + 0.6D);
+                            fWordEmotion[iWordTotal] = (float) ((double) fWordEmotion[iWordTotal] + 0.6D);
                         }
                     }
                 } else if (sNextChar.compareToIgnoreCase("b") == 0) {

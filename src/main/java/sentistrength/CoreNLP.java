@@ -25,32 +25,37 @@ import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
 public class CoreNLP {
-	private int setLength=0;
-	private String[] coreNLPSet;
+    private int setLength = 0;
+    private String[] coreNLPSet;
+
     public int getSetLength() {
-		return setLength;
-	}
-	public void setSetLength(int setLength) {
-		this.setLength = setLength;
-	}
-	public String[] getCoreNLPSet() {
-		return coreNLPSet;
-	}
-	public void setCoreNLPSet(String[] coreNLPSet) {
-		this.coreNLPSet = coreNLPSet;
-	}
-	public void coreNLPSet(String text) {
+        return setLength;
+    }
+
+    public void setSetLength(int setLength) {
+        this.setLength = setLength;
+    }
+
+    public String[] getCoreNLPSet() {
+        return coreNLPSet;
+    }
+
+    public void setCoreNLPSet(String[] coreNLPSet) {
+        this.coreNLPSet = coreNLPSet;
+    }
+
+    public void coreNLPSet(String text) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         Annotation document = new Annotation(text);
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-        this.setLength=sentences.size();
-        coreNLPSet= new String[this.setLength];
-        int pos=0;
-        for(CoreMap sentence: sentences) {
-        	coreNLPSet[pos]=sentence.toString();
+        this.setLength = sentences.size();
+        coreNLPSet = new String[this.setLength];
+        int pos = 0;
+        for (CoreMap sentence : sentences) {
+            coreNLPSet[pos] = sentence.toString();
         }
     }
 }

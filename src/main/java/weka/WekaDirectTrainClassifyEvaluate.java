@@ -3,6 +3,7 @@ package weka;
 
 import java.io.*;
 import java.util.Date;
+
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.*;
@@ -13,18 +14,16 @@ import weka.classifiers.rules.JRip;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.Utils;
-public class WekaDirectTrainClassifyEvaluate
-{
+
+public class WekaDirectTrainClassifyEvaluate {
 
     private static String sgJarFolder = "C:/jars/";
 
-    public WekaDirectTrainClassifyEvaluate()
-    {
+    public WekaDirectTrainClassifyEvaluate() {
     }
 
     public static void directClassifyAllArff(String arffTrainFile, String arffEvalFile, String classifierName, String classifierExclude, String allResultsFilename, String summaryResultsFilename)
-        throws Exception
-    {
+            throws Exception {
         Date start = Utilities.getNow();
         System.out.print("Loading data ... ");
         BufferedReader reader = new BufferedReader(new FileReader(arffTrainFile));
@@ -38,9 +37,8 @@ public class WekaDirectTrainClassifyEvaluate
         String options = null;
         Evaluation eval = new Evaluation(evalData);
         System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-        if(classifierName.indexOf(",liblin,") > 0)
-            try
-            {
+        if (classifierName.indexOf(",liblin,") > 0)
+            try {
                 Utilities.printNameAndWarning("LibLINEAR");
                 start = Utilities.getNow();
                 Utilities.addToClassPath((new StringBuilder(String.valueOf(sgJarFolder))).append("liblinear-1.51.jar").toString());
@@ -51,16 +49,13 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeLibLINEAR, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "LibLin", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with LibLINEAR on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
                 System.out.println((new StringBuilder("Must have jar file in Jar folder ")).append(sgJarFolder).append(" or classpath. Here is the current Java classpath").toString());
                 Utilities.printClasspath();
             }
-        if(classifierName.indexOf(",libsvm,") > 0)
-            try
-            {
+        if (classifierName.indexOf(",libsvm,") > 0)
+            try {
                 Utilities.printNameAndWarning("LibSVM");
                 start = Utilities.getNow();
                 Utilities.addToClassPath((new StringBuilder(String.valueOf(sgJarFolder))).append("libsvm.jar").toString());
@@ -71,16 +66,13 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeLibSVM, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "LibSVM", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with LibSVM on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
                 System.out.println((new StringBuilder("Must have jar file in Jar folder ")).append(sgJarFolder).append(" or classpath. Here is the current Java classpath").toString());
                 Utilities.printClasspath();
             }
-        if((classifierName.indexOf(",smo,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
-            try
-            {
+        if ((classifierName.indexOf(",smo,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
+            try {
                 Utilities.printNameAndWarning("SMO   ");
                 start = Utilities.getNow();
                 SMO schemeSMO = new SMO();
@@ -90,14 +82,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeSMO, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "SMO", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SMO on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",slog,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
-            try
-            {
+        if ((classifierName.indexOf(",slog,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMO"))
+            try {
                 Utilities.printNameAndWarning("SLOG  ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -108,14 +97,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeSLOG, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "SLOG", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SLOG on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",bayes,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("BAYES"))
-            try
-            {
+        if ((classifierName.indexOf(",bayes,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("BAYES"))
+            try {
                 Utilities.printNameAndWarning("BAYES ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -124,14 +110,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeBayes, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "BAYES", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with BAYES on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",ada,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("ADA"))
-            try
-            {
+        if ((classifierName.indexOf(",ada,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("ADA"))
+            try {
                 Utilities.printNameAndWarning("ADA   ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -142,14 +125,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeAda, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "ADA", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with ADA on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",smoreg,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMOreg"))
-            try
-            {
+        if ((classifierName.indexOf(",smoreg,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("SMOreg"))
+            try {
                 Utilities.printNameAndWarning("SMOreg");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -160,14 +140,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeSMOreg, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "SMOreg", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with SMOreg on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",jrip,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("JRIP"))
-            try
-            {
+        if ((classifierName.indexOf(",jrip,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("JRIP"))
+            try {
                 Utilities.printNameAndWarning("JRIP  ");
                 start = Utilities.getNow();
                 JRip schemeJrip = new JRip();
@@ -177,14 +154,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeJrip, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "JRIP", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with JRIP on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",dec,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("DEC"))
-            try
-            {
+        if ((classifierName.indexOf(",dec,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("DEC"))
+            try {
                 Utilities.printlnNameAndWarning("DEC   ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -195,14 +169,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeDec, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "DEC", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with DEC on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if((classifierName.indexOf(",j48,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("J48"))
-            try
-            {
+        if ((classifierName.indexOf(",j48,") > 0 || classifierName.indexOf(",all,") > 0) && !classifierExclude.equals("J48"))
+            try {
                 Utilities.printNameAndWarning("J48   ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -213,14 +184,11 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeJ48, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "J48", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with J48 on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
-        if(classifierName.indexOf(",mlp,") > 0)
-            try
-            {
+        if (classifierName.indexOf(",mlp,") > 0)
+            try {
                 Utilities.printlnNameAndWarning("MLP   ");
                 start = Utilities.getNow();
                 eval = new Evaluation(evalData);
@@ -231,16 +199,13 @@ public class WekaDirectTrainClassifyEvaluate
                 eval.evaluateModel(schemeMLP, evalData, new Object[0]);
                 printClassificationResultsAllData(eval, arffTrainFile, "MLP", options, allResultsFilename, summaryResultsFilename);
                 System.out.println((new StringBuilder(String.valueOf(Utilities.timeGap(start, Utilities.getNow())))).append(" taken").toString());
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println((new StringBuilder("Error with MLP on ")).append(arffTrainFile).append(" ").append(e.getMessage()).toString());
             }
     }
 
     public static void printClassificationResultsAllData(Evaluation eval, String arffFilename, String classifierName, String options, String allResultsFilename, String summaryResultsFilename)
-        throws Exception
-    {
+            throws Exception {
         FileOutputStream fout = new FileOutputStream(allResultsFilename, true);
         PrintStream allResultsPrintStream = new PrintStream(fout);
         allResultsPrintStream.println();

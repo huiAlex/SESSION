@@ -15,9 +15,8 @@ import java.io.File;
 //            QuestionWords, BoosterWordsList, IdiomList, EvaluativeTerms, 
 //            IronyList, Lemmatiser, ClassificationOptions
 
-public class ClassificationResources
-{
-	public EmoticonsList emoticons;
+public class ClassificationResources {
+    public EmoticonsList emoticons;
     public CorrectSpellingsList correctSpellings;
     public SentimentWords sentimentWords;
     public NegatingWordList negatingWords;
@@ -42,9 +41,8 @@ public class ClassificationResources
     public String sgAdditionalFile;
     public String sgLemmaFile;
 
-    public ClassificationResources()
-    {
-    	    emoticons = new EmoticonsList();
+    public ClassificationResources() {
+        emoticons = new EmoticonsList();
         correctSpellings = new CorrectSpellingsList();
         sentimentWords = new SentimentWords();
         negatingWords = new NegatingWordList();
@@ -70,37 +68,31 @@ public class ClassificationResources
         sgLemmaFile = "";
     }
 
-    public boolean initialise(ClassificationOptions options)
-    {
+    public boolean initialise(ClassificationOptions options) {
         int iExtraLinesToReserve = 0;
-        if(sgAdditionalFile.compareTo("") != 0)
-        {
+        if (sgAdditionalFile.compareTo("") != 0) {
             iExtraLinesToReserve = FileOps.i_CountLinesInTextFile((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgAdditionalFile).toString());
-            if(iExtraLinesToReserve < 0)
-            {
+            if (iExtraLinesToReserve < 0) {
                 System.out.println((new StringBuilder("No lines found in additional file! Ignoring ")).append(sgAdditionalFile).toString());
                 return false;
             }
         }
-        if(options.bgUseLemmatisation && !lemmatiser.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgLemmaFile).toString(), false))
-        {
+        if (options.bgUseLemmatisation && !lemmatiser.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgLemmaFile).toString(), false)) {
             System.out.println((new StringBuilder("Can't load lemma file! ")).append(sgLemmaFile).toString());
             return false;
         }
         File f = new File((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgSentimentWordsFile).toString());
-        if(!f.exists() || f.isDirectory())
+        if (!f.exists() || f.isDirectory())
             sgSentimentWordsFile = sgSentimentWordsFile2;
         File f2 = new File((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgCorrectSpellingFileName).toString());
-        if(!f2.exists() || f2.isDirectory())
+        if (!f2.exists() || f2.isDirectory())
             sgCorrectSpellingFileName = sgCorrectSpellingFileName2;
-        if(emoticons.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgEmoticonLookupTable).toString(), options) && correctSpellings.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgCorrectSpellingFileName).toString(), options) && sentimentWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgSentimentWordsFile).toString(), options, iExtraLinesToReserve) && negatingWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgNegatingWordListFile).toString(), options) && questionWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgQuestionWordListFile).toString(), options) && ironyList.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgIronyWordListFile).toString(), options) && boosterWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgBoosterListFile).toString(), options, iExtraLinesToReserve) && idiomList.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgIdiomLookupTableFile).toString(), options, iExtraLinesToReserve))
-        {   
-        	    if(iExtraLinesToReserve > 0)
+        if (emoticons.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgEmoticonLookupTable).toString(), options) && correctSpellings.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgCorrectSpellingFileName).toString(), options) && sentimentWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgSentimentWordsFile).toString(), options, iExtraLinesToReserve) && negatingWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgNegatingWordListFile).toString(), options) && questionWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgQuestionWordListFile).toString(), options) && ironyList.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgIronyWordListFile).toString(), options) && boosterWords.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgBoosterListFile).toString(), options, iExtraLinesToReserve) && idiomList.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgIdiomLookupTableFile).toString(), options, iExtraLinesToReserve)) {
+            if (iExtraLinesToReserve > 0)
                 return evaluativeTerms.initialise((new StringBuilder(String.valueOf(sgSentiStrengthFolder))).append(sgAdditionalFile).toString(), options, idiomList, sentimentWords);
             else
                 return true;
-        } else
-        {
+        } else {
             return false;
         }
     }

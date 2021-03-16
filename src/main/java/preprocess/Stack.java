@@ -1,9 +1,12 @@
 package preprocess;
+
 import java.util.LinkedList;
+
 public class Stack {
-	private LinkedList<Object> linklist = new LinkedList<Object>();
+    private LinkedList<Object> linklist = new LinkedList<Object>();
+
     public void push(Object o) {
-    	linklist.addFirst(o);
+        linklist.addFirst(o);
     }
 
     public Object pop() {

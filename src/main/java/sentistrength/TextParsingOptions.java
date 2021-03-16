@@ -6,16 +6,14 @@
 package sentistrength;
 
 
-public class TextParsingOptions
-{
+public class TextParsingOptions {
 
     public boolean bgIncludePunctuation;
     public int igNgramSize;
     public boolean bgUseTranslations;
     public boolean bgAddEmphasisCode;
 
-    public TextParsingOptions()
-    {
+    public TextParsingOptions() {
         bgIncludePunctuation = true;
         igNgramSize = 1;
         bgUseTranslations = true;
